@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>homework17</title>
+</head>
+<body>
+<script>
+
+const films = [
+	{
+		title: '5 element',
+		genre: 'fantastic',
+		year: 1997
+	},
+	{
+		title: 'mad max',
+		genre: 'action',
+		year: 2015
+	},
+	{
+		title: 'alien',
+		genre: 'fantastic',
+		year: 1979
+	},
+	{
+		title: 'adrenaline',
+		genre: 'action',
+		year: 2006
+	},
+	{
+		title: 'avatar',
+		genre: 'fantastic',
+		year: 2009
+	}	
+];
+
+// example of object:
+// let film = {
+// 	action: [
+// 		{
+// 			title: 'adrenaline',
+// 			year: 2006
+// 		}
+// 	]
+// }
+
+function arrToObj(arr) {
+	let filmObj = {};
+
+	for (var i = 0; i < films.length; i++) {
+		let film = {title:films[i].title, year:films[i].year};
+		
+		if (filmObj.hasOwnProperty(films[i].genre)) {
+			filmObj[films[i].genre].push(film);
+		} else {
+			filmObj[films[i].genre] = [film];
+		}
+	}
+	return filmObj;
+}
+
+let newFilmObj = arrToObj(films);
+
+newFilmObj[Symbol.iterator] = function () {
+	let index = 0;
+	let indexGenres = 0;
+	const genreArr = Object.values(newFilmObj);	
+
+	return {
+		next(){
+			if(index === genreArr[indexGenres].length) {
+				indexGenres++;
+				index = 0;
+			}
+
+			if(indexGenres === genreArr.length) {
+				return {done: true};
+			}
+
+			return {
+				done: false,
+				value: genreArr[indexGenres][index++]
+			}
+		}
+	}
+};
+
+for(const film of newFilmObj) {
+	console.log(film);
+};
+
+</script>
+</body>
+</html>
