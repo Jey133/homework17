@@ -45,22 +45,20 @@ const films = [
 // 	]
 // }
 
-function arrToObj(arr) {
-	let filmObj = {};
+let newFilmObj = {};
 
-	for (var i = 0; i < films.length; i++) {
-		let film = {title:films[i].title, year:films[i].year};
+newFilmObj = films.reduce(function(acc, filmItem){
 		
-		if (filmObj.hasOwnProperty(films[i].genre)) {
-			filmObj[films[i].genre].push(film);
-		} else {
-			filmObj[films[i].genre] = [film];
-		}
-	}
-	return filmObj;
-}
+		let genre = filmItem.genre;
+		delete filmItem.genre;
 
-let newFilmObj = arrToObj(films);
+		if (acc[genre] === undefined) {
+			acc[genre] = [];
+		}
+		acc[genre].push(filmItem);
+		return acc;
+
+	}, newFilmObj );
 
 newFilmObj[Symbol.iterator] = function () {
 	let index = 0;
